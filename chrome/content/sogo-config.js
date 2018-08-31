@@ -1,15 +1,18 @@
 /* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 var sogoConfig = { username: null, baseURL: null };
 
 function sogoUserName() {
 	if (!sogoConfig['username']) {
 		var mgr = Components.classes["@mozilla.org/messenger/account-manager;1"]
 			.getService(Components.interfaces.nsIMsgAccountManager);
-		var prefService = (Components.classes["@mozilla.org/preferences-service;1"]
-											 .getService(Components.interfaces.nsIPrefBranch));
+		//var prefService = (Components.classes["@mozilla.org/preferences-service;1"]
+		//								 .getService(Components.interfaces.nsIPrefBranch));
 		var useEmail = false;
 		try {
-			useEmail = prefService.getBoolPref("sogo-integrator.identification.use_email_address");
+			useEmail = Services.prefs.getBoolPref("sogo-integrator.identification.use_email_address");
 		}
 		catch(e) {
 			useEmail = false;
@@ -60,11 +63,11 @@ function sogoBaseURL() {
 		catch (e) {
 		}
 
-		var prefService = (Components.classes["@mozilla.org/preferences-service;1"]
-																 .getService(Components.interfaces.nsIPrefBranch));
+		//var prefService = (Components.classes["@mozilla.org/preferences-service;1"]
+		//														 .getService(Components.interfaces.nsIPrefBranch));
 		var sogoPrefix;
 		try {
-			sogoPrefix = "/" + prefService.getCharPref("sogo-integrator.sogo-prefix");
+			sogoPrefix = "/" + Services.prefs.getCharPref("sogo-integrator.sogo-prefix");
 		}
 		catch(e) {
 			sogoPrefix = "/SOGo";

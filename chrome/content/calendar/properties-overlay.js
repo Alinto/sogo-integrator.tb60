@@ -46,7 +46,7 @@ function onLoadOverlay() {
 					sizeToContent();
 
 					/* notifications */
-					for each (let davPropName in sogoBoxes) {
+					for (let davPropName in sogoBoxes) {
 							let boxId = "sogo-" + davPropName;
 							let box = document.getElementById(boxId);
 							let propName = "calendar.sogo." + davPropName;
@@ -73,7 +73,7 @@ function onLoadOverlay() {
 			else {
 				hiddenRows = ["sogo-calendar-properties"];
 			}
-			for each (let row in hiddenRows) {
+			for (let row in hiddenRows) {
 					document.getElementById(row).setAttribute("collapsed", "true");
    		}
 
@@ -113,7 +113,7 @@ function onOverlayAccept() {
 		let aclEntry = calendar.aclEntry;
 		if (aclEntry.userIsOwner) {
 			/* notifications */
-			for each (let davPropName in sogoBoxes) {
+			for (let davPropName in sogoBoxes) {
 				let boxId = "sogo-" + davPropName;
 				let box = document.getElementById(boxId);
 				let propName = "calendar.sogo." + davPropName;
@@ -153,7 +153,7 @@ function onOverlayAccept() {
 			}
 
 			if (aclEntry.userIsOwner) {
-				for each (let davPropName in sogoBoxes) {
+				for (let davPropName in sogoBoxes) {
 					let boxId = "sogo-" + davPropName;
 					let box = document.getElementById(boxId);
 					let propName = "calendar.sogo." + davPropName;

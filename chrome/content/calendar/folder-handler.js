@@ -1,3 +1,5 @@
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 function CalendarHandler() {
     this.doubles = [];
     this.mgr = (Components.classes["@mozilla.org/calendar/manager;1"]
@@ -93,7 +95,7 @@ CalendarHandler.prototype = {
                              "notify-user-on-personal-modifications",
                              "notified-user-on-personal-modifications"];
             let counter = 2;
-            for each (let sogoProp in sogoProps) {
+            for (let sogoProp in sogoProps) {
                 if (props[counter]) {
                     let propName = "calendar.sogo." + sogoProp;
                     directory.setProperty(propName, props[counter]);
@@ -135,12 +137,12 @@ CalendarHandler.prototype = {
         directory.setProperty("aclManagerClass", "@inverse.ca/calendar/caldav-acl-manager;1");
     },
     addDirectories: function addDirectories(newDirs) {
-        let ioSvc = Components.classes["@mozilla.org/network/io-service;1"]
-                              .getService(Components.interfaces.nsIIOService);
+        //let ioSvc = Components.classes["@mozilla.org/network/io-service;1"]
+        //                      .getService(Components.interfaces.nsIIOService);
 
         dump("addDirectories\n");
         for (let i = 0; i < newDirs.length; i++) {
-            let newURI = ioSvc.newURI(newDirs[i]['url'], null, null);
+            let newURI = Services.io.newURI(newDirs[i]['url'], null, null);
             let newCalendar = this.mgr.createCalendar("caldav", newURI);
             this._setDirectoryProperties(newCalendar, newDirs[i], true);
             this.mgr.registerCalendar(newCalendar, true);

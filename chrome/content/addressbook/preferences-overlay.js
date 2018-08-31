@@ -62,10 +62,10 @@ renameTarget.prototype = {
 
 		if (status == 207) {
 			var responses = jsonResult["multistatus"][0]["response"];
-			for each (var response in responses) {
+			for (var response in responses) {
 				var url = response["href"][0];
 				if (this.dialog.folderURL.indexOf(url) > -1) {
-					for each (var propstat in response["propstat"]) {
+					for (var propstat in response["propstat"]) {
 						if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 							if (propstat["prop"][0]["displayname"]) {
 								if (onAccept())

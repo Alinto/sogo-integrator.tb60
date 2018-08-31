@@ -1,3 +1,5 @@
+Components.utils.import("resource://gre/modules/Preferences.jsm");
+
 function jsInclude(files, target) {
     let loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
                            .getService(Components.interfaces.mozIJSSubScriptLoader);
@@ -74,16 +76,16 @@ function SIPrefsOnLoad() {
     let classChangeListener = function(event) {
         gSIDefaultClassificationsChanged = true;
     };
-    for each (let branchName in [ "events", "todos" ]) {
+    for (let branchName in [ "events", "todos" ]) {
         let pref = document.getElementById("calendar." + branchName + ".default-classification");
         pref.addEventListener("change", classChangeListener, false);
     }
 
     /* mail labels */
     let labelsObserver = new SIMailsLabelsObserver();
-    let prefService = Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefBranch);    
-    prefService.addObserver("mailnews.tags.", labelsObserver, false);
+    //let prefService = Components.classes["@mozilla.org/preferences-service;1"]
+    //    .getService(Components.interfaces.nsIPrefBranch);    
+    Preferences.addObserver("mailnews.tags.", labelsObserver, false);
 }
 
 function SIPrefsOnUnload() {

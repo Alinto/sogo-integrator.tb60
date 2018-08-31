@@ -1,6 +1,7 @@
 /* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
+Components.utils.import("resource://gre/modules/Services.jsm");
 
 function jsInclude(files, target) {
     let loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
@@ -123,8 +124,8 @@ function prepareRequiredExtensions(extensionInfos, extensionItems) {
     let unconfiguredExtensions = [];
     let uninstallExtensions = [];
 
-    let preferences = Components.classes["@mozilla.org/preferences;1"]
-                                .getService(Components.interfaces.nsIPrefBranch);
+    //let preferences = Components.classes["@mozilla.org/preferences;1"]
+    //                            .getService(Components.interfaces.nsIPrefBranch);
     let appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
                             .getService(Components.interfaces.nsIXULRuntime);
 
@@ -150,7 +151,7 @@ function prepareRequiredExtensions(extensionInfos, extensionItems) {
             else {
                 let configured = false;
                 try {
-                    configured = preferences.getBoolPref("inverse-sogo-integrator.extensions." + extensions[i].id + ".isconfigured");
+                    configured = Services.prefs.getBoolPref("inverse-sogo-integrator.extensions." + extensions[i].id + ".isconfigured");
                 }
                 catch(e) {}
                 if (!configured)
@@ -269,7 +270,7 @@ function _setupCalStartupObserver() {
 	let compCalendar = getCompositeCalendar();
 	let calDavCount = 0;
 	let calendars = compCalendar.getCalendars({});
-	for each (let calendar in calendars) {
+	for (let calendar in calendars) {
       if (calendar.type == "caldav"
           && calendar.readOnly
           && !calendar.getProperty("disabled")) {
@@ -382,18 +383,18 @@ function force_char_pref(key, value) {
 }
 
 function applyForcedPrefs() {
-    let prefService = Components.classes["@mozilla.org/preferences;1"]
-        .getService(Components.interfaces.nsIPrefBranch);
+    //let prefService = Components.classes["@mozilla.org/preferences;1"]
+    //    .getService(Components.interfaces.nsIPrefBranch);
     for (let key in forcedPrefs) {
         let pref = forcedPrefs[key];
         if (pref["type"] == "int") {
-            prefService.setIntPref(key, pref["value"]);
+            Services.prefs.setIntPref(key, pref["value"]);
         }
         else if (pref["type"] == "bool") {
-            prefService.setBoolPref(key, pref["value"]);
+            Services.prefs.setBoolPref(key, pref["value"]);
         }
         else if (pref["type"] == "char") {
-            prefService.setCharPref(key, pref["value"]);
+            Services.prefs.setCharPref(key, pref["value"]);
         }
         else
             dump("unsupported pref type: " + pref["type"] + "\n");

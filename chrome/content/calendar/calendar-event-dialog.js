@@ -1,3 +1,5 @@
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 function SIOnLoadHandler(event) {
     window.SIOldUpdateAttendees = window.updateAttendees;
     window.updateAttendees = window.SIUpdateAttendees;
@@ -66,13 +68,13 @@ function SISaveItem() {
 function SIUpdateAttendees() {
     SIOldUpdateAttendees();
 
-    let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
-  		       .getService(Components.interfaces.nsIPrefBranch));
+    //let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
+    //		       .getService(Components.interfaces.nsIPrefBranch));
     
     let b = false;
 
     try {
-        b = prefService.getBoolPref("sogo-integrator.disable-send-invitations-checkbox");
+        b = Services.prefs.getBoolPref("sogo-integrator.disable-send-invitations-checkbox");
     } catch (e) {}
 
     if (b != true) {

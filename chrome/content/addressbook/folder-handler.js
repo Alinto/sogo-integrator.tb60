@@ -1,3 +1,5 @@
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 function jsInclude(files, target) {
     let loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
                            .getService(Components.interfaces.mozIJSSubScriptLoader);
@@ -108,10 +110,10 @@ AddressbookHandler.prototype = {
     },
     ensurePersonalIsRemote: function() {
         this._ensureFolderIsRemote("abook.mab");
-        let prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                                    .getService(Components.interfaces.nsIPrefBranch);
-        if (this._autoCollectIsHistory(prefService)) {
-            this._ensureHistoryIsPersonal(prefService);
+        //let prefService = Components.classes["@mozilla.org/preferences-service;1"]
+        //                            .getService(Components.interfaces.nsIPrefBranch);
+        if (this._autoCollectIsHistory()) {
+            this._ensureHistoryIsPersonal();
         }
         this._ensureFolderIsRemote("history.mab");
     },
@@ -199,10 +201,10 @@ AddressbookHandler.prototype = {
                 throw "Personal Addressbook cannot be replaced!";
         }
     },
-    _autoCollectIsHistory: function(prefService) {
+    _autoCollectIsHistory: function() {
         let isHistory = false;
         try {
-            let abURI = prefService.getCharPref("mail.collect_addressbook");
+            let abURI = Services.prefs.getCharPref("mail.collect_addressbook");
             isHistory = (abURI == "moz-abmdbdirectory://history.mab"
                          || abURI == "moz-abmdbdirectory://abook.mab");
         }
@@ -211,18 +213,18 @@ AddressbookHandler.prototype = {
 
         return isHistory;
     },
-    _ensureHistoryIsPersonal: function(prefService) {
+    _ensureHistoryIsPersonal: function() {
         let personalURL = sogoBaseURL() + "Contacts/personal/";
         let existing = this.getExistingDirectories();
         let personalAB = existing[personalURL];
-        prefService.setCharPref("mail.collect_addressbook", personalAB.URI);
+        Services.prefs.setCharPref("mail.collect_addressbook", personalAB.URI);
     },
     ensureAutoComplete: function() {
-        let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
-                           .getService(Components.interfaces.nsIPrefBranch));
+        //let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
+        //                   .getService(Components.interfaces.nsIPrefBranch));
         let prefACURL;
         try {
-            let prefACURLID = prefService.getCharPref("sogo-integrator.autocomplete.server.urlid");
+            let prefACURLID = Services.prefs.getCharPref("sogo-integrator.autocomplete.server.urlid");
             prefACURL = sogoBaseURL() + "Contacts/" + prefACURLID + "/";
         }
         catch(e) {
@@ -241,7 +243,7 @@ AddressbookHandler.prototype = {
             }
             if (acAB) {
                 let abPrefID = acAB.dirPrefId;
-                prefService.setCharPref("ldap_2.autoComplete.directoryServer", abPrefID);
+                Services.prefs.setCharPref("ldap_2.autoComplete.directoryServer", abPrefID);
             }
             else
                 dump("Could not set public directory as preferred autocomplete server\n");

@@ -1,3 +1,5 @@
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 function jsInclude(files, target) {
     let loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
                            .getService(Components.interfaces.mozIJSSubScriptLoader);
@@ -281,12 +283,12 @@ function checkFolders() {
                     toolbar.collapsed = false;
                 }
             }
-            let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
-                               .getService(Components.interfaces.nsIPrefBranch));
+            //let prefService = (Components.classes["@mozilla.org/preferences-service;1"]
+            //                   .getService(Components.interfaces.nsIPrefBranch));
             let disableCalendaring;
             try {
                 disableCalendaring
-                    = prefService.getBoolPref("sogo-integrator.disable-calendaring");
+                    = Services.prefs.getBoolPref("sogo-integrator.disable-calendaring");
             }
             catch(e) {
                 disableCalendaring = false;
@@ -311,7 +313,7 @@ function hideLightningWidgets(hide) {
     let widgets = [ "mode-toolbar", "today-splitter", "today-pane-panel",
                     "ltnNewEvent", "ltnNewTask", "ltnNewCalendar",
                     "ltnMenu_calendar", "ltnMenu_tasks", "invitations-pane" ];
-    for each (let name in widgets) {
+    for (let name in widgets) {
         let widget = document.getElementById(name);
         if (widget) {
             if (hide == "true") {

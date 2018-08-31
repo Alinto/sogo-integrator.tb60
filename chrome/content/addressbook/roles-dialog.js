@@ -33,7 +33,7 @@ function onLoad() {
 	if (userData.userID == "anonymous") {
 		window.resizeTo(500, 156);
 		var cbRoles = [ "Creator", "Eraser", "Editor" ];
-		for each (var cbRole in cbRoles) {
+		for (var cbRole in cbRoles) {
 				var cbId = "roleObject" + cbRole;
 				var cb = document.getElementById(cbId);
 				cb.collapsed = true;

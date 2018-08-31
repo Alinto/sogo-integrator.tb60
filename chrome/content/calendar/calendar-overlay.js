@@ -1,3 +1,5 @@
+Components.utils.import("resource://calendar/modules/calUtils.jsm");
+
 function jsInclude(files, target) {
     let loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
                            .getService(Components.interfaces.mozIJSSubScriptLoader);
@@ -102,8 +104,8 @@ function SIpromptDeleteCalendar(calendar) {
             }
         }
         else {
-	    let title = calGetString("calendar", "removeCalendarButtonUnsubscribe");
-	    let msg = calGetString("calendar", "removeCalendarMessageUnsubscribe", [calendar.name]);
+	    let title = cal.l10n.getCalString("removeCalendarButtonUnsubscribe");
+	    let msg = cal.l10n.getCalString("removeCalendarMessageDeleteOrUnsubscribe", [calendar.name]);
             let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
                                           .getService(Components.interfaces.nsIPromptService);
             if (promptService.confirm(window, title, msg, {})) {

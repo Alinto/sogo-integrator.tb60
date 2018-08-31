@@ -78,7 +78,7 @@ function downloadMissingExtensions(dlExtensions) {
     activeInstalls = dlExtensions.length;
     if (activeInstalls > 0) {
         AddonManager.addInstallListener(installListener);
-        for each (let extension in dlExtensions) {
+        for (let extension in dlExtensions) {
             dump("update-dialogs.js: downloading " + extension["name"]
                  + " from " + extension["url"] + "\n");
             AddonManager.getInstallForURL(extension["url"], installCallback,

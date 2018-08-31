@@ -35,15 +35,15 @@ function onLoad() {
 	if (userData.userID == "anonymous") {
 		window.resizeTo(500, 186);
 		var cbRoles = [ "Creator", "Eraser" ];
-		for each (var cbRole in cbRoles) {
+		for (var cbRole in cbRoles) {
 				var cbId = "roleObject" + cbRole;
 				var cb = document.getElementById(cbId);
 				cb.collapsed = true;
 		}
 
 		var menuRoles = [ "Modifier", "Responder" ];
-		for each (var menuRole in menuRoles) {
-			for each (var menuClass in menuObjectClasses) {
+		for (var menuRole in menuRoles) {
+			for (var menuClass in menuObjectClasses) {
 				var menuOptionId = "menuOption" + menuClass + menuRole;
 				var menuOption = document.getElementById(menuOptionId);
 				menuOption.collapsed = true;

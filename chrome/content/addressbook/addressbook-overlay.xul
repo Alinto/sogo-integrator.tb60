@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright:     Inverse inc., 2007
- Author:        Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ Copyright:  Inverse inc., 2007-2018
  Email:         support@inverse.ca
  URL:           http://inverse.ca
   -->
@@ -37,7 +36,7 @@
     <command id="addressbook_subscribe_addressbook_command"
       oncommand="openAbSubscriptionDialog()"/>
     <command id="addressbook_delete_addressbook_command"
-      oncommand="SIAbDeleteDirectory(gSelectedDir)"/>
+      oncommand="SIAbDeleteDirectory(GetSelectedDirectory())"/>
   </commandset>
 
   <stringbundleset id="stringbundleset">
