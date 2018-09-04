@@ -14,6 +14,7 @@ function jsInclude(files, target) {
 jsInclude(["chrome://inverse-library/content/sogoWebDAV.js",
            "chrome://sogo-integrator/content/sogo-config.js"]);
 
+Components.utils.import("resource://gre/modules/Preferences.jsm");
 Components.utils.import("resource://calendar/modules/calUtils.jsm");
 
 let SICalendarDefaultClassifications = {
@@ -53,7 +54,8 @@ let SICalendarDefaultClassifications = {
                                 let branch = prefBranches[k];
                                 let branchName = "calendar." + branch + ".default-classification";
                                 let value = propstat["prop"][0][k][0];
-                                cal.setPref(branchName, value);
+                                //cal.setPref(branchName, value);
+                                Preferences.set(branchName, value);
                             }
                         }
                     }

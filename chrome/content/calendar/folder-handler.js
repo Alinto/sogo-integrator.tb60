@@ -60,7 +60,7 @@ CalendarHandler.prototype = {
                 if (!this.itemCount) {
                     dump("removing\n");
                     mgr.unregisterCalendar(aCalendar);
-                    mgr.deleteCalendar(aCalendar);
+                    mgr.removeCalendar(aCalendar);
                 }
             },
             onGetResult: function(aCalendar, aStatus, aItemType, aDetail, aCount, aItems) {
@@ -157,7 +157,7 @@ CalendarHandler.prototype = {
         for (let i = 0; i < oldDirs.length; i++) {
             // 			dump("removing calendar: " + oldDirs[i] + "\n");
             this.mgr.unregisterCalendar(oldDirs[i]);
-            this.mgr.deleteCalendar(oldDirs[i]);
+            this.mgr.removeCalendar(oldDirs[i]);
         }
     },
     urlForParentDirectory: function urlForParentDirectory() {

@@ -116,7 +116,7 @@ function SIpromptDeleteCalendar(calendar) {
     else if (_confirmDelete(calendar.name)) {
         let calMgr = getCalendarManager();
         calMgr.unregisterCalendar(calendar);
-        calMgr.deleteCalendar(calendar);
+        calMgr.removeCalendar(calendar);
 
         let url = calendar.uri.spec;
         if (url[url.length - 1] != '/')

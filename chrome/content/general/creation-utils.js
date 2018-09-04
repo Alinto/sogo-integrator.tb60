@@ -44,22 +44,24 @@ createOperation.prototype = {
 	},
  onPropPatchQueryComplete: function(status, jsonResult) {
 		if (status == 207) {
+			var _this = this;
 			var responses = jsonResult["multistatus"][0]["response"];
-			for (var response in responses) {
-				var url = response["href"][0];
-				if (this.folderURL.indexOf(url) > -1) {
-					for (var propstat in response["propstat"]) {
-						if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
-							if (propstat["prop"][0]["displayname"]) {
-								var newFolder = {url: this.folderURL,
-																 owner: sogoUserName(),
-																 displayName: this.displayName};
-								this.handler.addDirectories([newFolder]);
-							}
-						}
+			responses.forEach(function(response) {
+					var url = response["href"][0];
+					if (_this.folderURL.indexOf(url) > -1) {
+						var propstats = response["propstat"];
+						propstats.forEach(function(propstat) {
+								if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
+									if (propstat["prop"][0]["displayname"]) {
+										var newFolder = {url: _this.folderURL,
+																		 owner: sogoUserName(),
+																		 displayName: _this.displayName};
+										_this.handler.addDirectories([newFolder]);
+									}
+								}
+							});
 					}
-				}
-			}
+				});
 		}
 	}
 };
