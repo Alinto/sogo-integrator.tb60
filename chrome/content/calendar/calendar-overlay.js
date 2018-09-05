@@ -114,7 +114,7 @@ function SIpromptDeleteCalendar(calendar) {
         }
     }
     else if (_confirmDelete(calendar.name)) {
-        let calMgr = getCalendarManager();
+        let calMgr = cal.getCalendarManager();
         calMgr.unregisterCalendar(calendar);
         calMgr.removeCalendar(calendar);
 
