@@ -120,6 +120,8 @@ function makeExtensionURL(baseURL, extension, extensionItem) {
 function prepareRequiredExtensions(extensionInfos, extensionItems) {
     let extensions = extensionInfos["extensions"];
 
+    //dump("prepareRequiredExtensions: " + JSON.stringify(extensions) + "\n");
+
     let extensionsURL = [];
     let unconfiguredExtensions = [];
     let uninstallExtensions = [];
@@ -130,6 +132,7 @@ function prepareRequiredExtensions(extensionInfos, extensionItems) {
                             .getService(Components.interfaces.nsIXULRuntime);
 
     let rdf = iCc["@mozilla.org/rdf/rdf-service;1"].getService(iCi.nsIRDFService);
+    //let rdf = Cc["@mozilla.org/rdf/rdf-service;1"].getService(iCi.nsIRDFService);
     for (let i = 0; i < extensions.length; i++) {
         let url = makeExtensionURL(extensionInfos["updateRDF"], extensions[i], extensionItems[i]);
         let extensionURN = rdf.GetResource("urn:mozilla:extension:" + extensions[i].id);
@@ -162,12 +165,17 @@ function prepareRequiredExtensions(extensionInfos, extensionItems) {
             dump("no data returned for '" + extensions[i].id + "'\n");
     }
 
-    return { urls: extensionsURL,
-             configuration: unconfiguredExtensions,
-             uninstall: uninstallExtensions};
+    let result = { urls: extensionsURL,
+                   configuration: unconfiguredExtensions,
+                   uninstall: uninstallExtensions};
+
+    //dump("prepareRequiredExtensions - result: " + JSON.stringify(result) + "\n");
+    return result;
 }
 
 function getExtensionData(rdf, url, extensionURN) {
+    //dump("getExtensionData...\n");
+
     let extensionData = null;
     let updates = rdf.GetResource("http://www.mozilla.org/2004/em-rdf#updates");
 
@@ -191,21 +199,24 @@ function getExtensionData(rdf, url, extensionURN) {
         dump("getExtensionData: " + e + "\n");
     }
 
+    //dump("getExtensionData completed, returning: " + JSON.stringify(extensionData) + "\n");
+
     return extensionData;
 }
 
 function GetRDFUpdateData(rdf, ds, node) {
-    // 	dump("getrdfupdatedata...\n");
+    //dump("GetRDFUpdateData... rdf:" + rdf + " ds:" + ds + " node: " + node + "\n");
     let updateData = { url: null, version: null };
 
-    let extensionVersion = rdf.GetResource("http://www.mozilla.org/2004/em-rdf#version");
     let targetApplication = rdf.GetResource("http://www.mozilla.org/2004/em-rdf#targetApplication");
     let applicationId = rdf.GetResource("http://www.mozilla.org/2004/em-rdf#id");
     let updateLink = rdf.GetResource("http://www.mozilla.org/2004/em-rdf#updateLink");
+    let extensionVersion = ds.GetTarget(node,  rdf.GetResource("http://www.mozilla.org/2004/em-rdf#version"), true);
 
-    let version = ds.GetTarget(node, extensionVersion, true);
-    if (version instanceof iCi.nsIRDFLiteral) {
-        updateData.version = version.Value;
+    //dump("extensionVersion: " + extensionVersion + " targetApplication: " + targetApplication + " applicationId: " + applicationId + " updateLink: " + updateLink + " version: " + version + "\n");
+
+    if (extensionVersion instanceof iCi.nsIRDFLiteral) {
+        updateData.version = extensionVersion.Value;
         let appNode = ds.GetTarget(node, targetApplication, true);
         if (appNode) {
             let appId = ds.GetTarget(appNode, applicationId, true);
@@ -221,6 +232,7 @@ function GetRDFUpdateData(rdf, ds, node) {
     if (!(updateData.url && updateData.version))
         updateData = null;
 
+    //dump("GetRDFUpdateData completed, returning: " + JSON.stringify(updateData) + "\n");
     return updateData;
 }
 

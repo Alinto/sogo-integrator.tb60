@@ -78,13 +78,13 @@ function downloadMissingExtensions(dlExtensions) {
     activeInstalls = dlExtensions.length;
     if (activeInstalls > 0) {
         AddonManager.addInstallListener(installListener);
-        for (let extension in dlExtensions) {
-            dump("update-dialogs.js: downloading " + extension["name"]
-                 + " from " + extension["url"] + "\n");
-            AddonManager.getInstallForURL(extension["url"], installCallback,
-                                          "application/x-xpinstall", null,
-                                          extension["name"]);
-        }
+        dlExtensions.forEach(function(extension) {
+                dump("update-dialogs.js: downloading " + extension["name"]
+                     + " from " + extension["url"] + "\n");
+                AddonManager.getInstallForURL(extension["url"], installCallback,
+                                              "application/x-xpinstall", null,
+                                              extension["name"]);
+            });
     }
 }
 
