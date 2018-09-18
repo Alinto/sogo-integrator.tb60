@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <!--
- Copyright:     Inverse inc., 2007-2009
- Author:        Wolfgang Sourdeau <wsourdeau@inverse.ca>
- Email:         support@inverse.ca
- URL:           http://inverse.ca
+ Copyright:     Inverse inc., 2007-2018
+ Email:            support@inverse.ca
+ URL:               http://inverse.ca
   -->
 
 <?xml-stylesheet type="text/css" href="chrome://global/skin/global.css"?>
@@ -19,8 +18,7 @@
     <menuitem id="list-calendars-context-delete"
       deletelabel="&calendar.context.sogo-delete.label;"
       unsubscribelabel="&calendar.context.sogo-unsubscribe.label;"
-      observes="calendar_unsubscribe_calendar_command"/>
-    <!-- oncommand="openCalendarUnsubscriptionDialog();" -->
+      command="calendar_unsubscribe_calendar_command"/>
     <menuitem id="list-calendars-context-sogo-showonly"
       label="&calendar.context.showonly.label;"
       observes="calendar_sogo_showonly_command"/>
