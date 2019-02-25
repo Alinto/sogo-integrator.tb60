@@ -155,7 +155,8 @@ function onOverlayAccept() {
 			}
 
 			if (aclEntry.userIsOwner) {
-				for (let davPropName in sogoBoxes) {
+				for (let i in sogoBoxes) {
+					let davPropName = sogoBoxes[i];
 					let boxId = "sogo-" + davPropName;
 					let box = document.getElementById(boxId);
 					let propName = "calendar.sogo." + davPropName;

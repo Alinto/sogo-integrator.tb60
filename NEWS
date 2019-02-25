@@ -1,6 +1,10 @@
+60.0.2
+------
+- fixed calendar color saving when being the owner
+
 60.0.1
 ------
-- Added a way to update all saved passwords when one scheme is changed
+- added a way to update all saved passwords when one scheme is changed
 
 60.0.0
 ------
