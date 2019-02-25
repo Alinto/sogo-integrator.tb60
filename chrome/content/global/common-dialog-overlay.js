@@ -218,12 +218,19 @@ function SICommonDialogOnUnload() {
 			if (index > -1) {
 				let scheme = login.hostname.substring(0,index);
 				let hostname = login.hostname.substring(index+3);
+
+				// We strip the TLD of the hostname in case we have foo.com for SMTP/IMAP and foo.net
+				// for SOGo, or vice-versa.
+				index = hostname.lastIndexOf(".");
+				if (index > -1)
+					hostname = hostname.substring(0, index);
+
 				if (supportedSchemes.indexOf(scheme) > -1) {
 
 					//dump("\nStored password: " + i + " " + scheme + " " + hostname + " " + login.username + " " + login.password + "\n\n");
 
 					if (description.indexOf(hostname) > -1) {
-						// Now comes the tricky part - if the username is same has the captured one and the hostname is somewhere in the
+						// Now comes the tricky part - if the username is the same has the captured one and the hostname is somewhere in the
 						// infoBody, we update the password.
 						if (username == login.username) {
 							dump("\nFound stored login to update!\n");
@@ -232,7 +239,7 @@ function SICommonDialogOnUnload() {
 							loginManager.addLogin(login);
 						}
 						// We have no username defined, like it's the case for SMTP/IMAP password prompts.
-						// In this cases, the username is also contained in the description
+						// In this case, the username is also contained in the description
 						else if (username.length == 0 && description.indexOf(login.username) > -1) {
 							dump("\nFound stored login to update!\n");
 							loginManager.removeLogin(login);
