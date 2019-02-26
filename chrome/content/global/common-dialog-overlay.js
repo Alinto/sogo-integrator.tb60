@@ -197,7 +197,7 @@ function SICommonDialogOnUnload() {
 	let password = document.getElementById("password1Textbox").value;
 	let checked = document.getElementById("checkbox").checked;
 
-	//dump("\n\n\n\nValues fromd dialog: " + description + " " + username + " " + password + " " + checked + "\n\n\n\n");
+	dump("\n\n\n\nValues fromd dialog: " + description + " " + username + " " + password + " " + checked + "\n\n\n\n");
 
 	if (checked && password.length) {
 		let loginManager = Components.classes["@mozilla.org/login-manager;1"].
@@ -210,20 +210,21 @@ function SICommonDialogOnUnload() {
 		// SMTP: smtp://...
 		// IMAP: imap://...
 		// POP3: mailbox://...
-		let supportedSchemes = ["http","imap","mailbox", "smtp"];
+		let supportedSchemes = ["http", "https", "imap","mailbox", "smtp"];
 
 		for (let i = 0; i < logins.length; i++) {
 			let login = logins[i];
 			let index = login.hostname.indexOf("://");
+			//dump("login.hostname: " + login.hostname + "\n");
 			if (index > -1) {
 				let scheme = login.hostname.substring(0,index);
 				let hostname = login.hostname.substring(index+3);
-
+				//dump("Scheme: " + scheme + " and new hostname: " + hostname + "\n");
 				// We strip the TLD of the hostname in case we have foo.com for SMTP/IMAP and foo.net
 				// for SOGo, or vice-versa.
-				index = hostname.lastIndexOf(".");
-				if (index > -1)
-					hostname = hostname.substring(0, index);
+				let res = hostname.split(".");
+				if (res.length > 1)
+					hostname = res[res.length-2]
 
 				if (supportedSchemes.indexOf(scheme) > -1) {
 
@@ -233,7 +234,7 @@ function SICommonDialogOnUnload() {
 						// Now comes the tricky part - if the username is the same has the captured one and the hostname is somewhere in the
 						// infoBody, we update the password.
 						if (username == login.username) {
-							dump("\nFound stored login to update!\n");
+							//dump("\nFound stored login to update!\n");
 							loginManager.removeLogin(login);
 							login.password = password;
 							loginManager.addLogin(login);
@@ -241,7 +242,7 @@ function SICommonDialogOnUnload() {
 						// We have no username defined, like it's the case for SMTP/IMAP password prompts.
 						// In this case, the username is also contained in the description
 						else if (username.length == 0 && description.indexOf(login.username) > -1) {
-							dump("\nFound stored login to update!\n");
+							//dump("\nFound stored login to update!\n");
 							loginManager.removeLogin(login);
 							login.password = password;
 							loginManager.addLogin(login);
